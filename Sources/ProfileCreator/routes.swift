@@ -10,5 +10,20 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
 
+    // Initialize the signer with certificate details from configuration
+    let certificatePath = Configuration.certificate.path
+    let certificatePassword = Configuration.certificate.password
+    print("Routes: Initializing MobileConfigSigner with:")
+    print("  Certificate path: \(certificatePath)")
+    print("  Certificate password: \(certificatePassword)")
+    
+    let signer = MobileConfigSigner(
+        certificatePath: certificatePath,
+        certificatePassword: certificatePassword
+    )
+    
+    // Register the MobileConfigController with the signer
+    try app.register(collection: MobileConfigController(signer: signer))
+
     try app.register(collection: TodoController())
 }
